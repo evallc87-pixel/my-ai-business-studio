@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MY AI BUSINESS STUDIO</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6fb;color:#172033;font-family:Arial,sans-serif}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#111827;color:white;padding:24px 16px;flex-shrink:0}
+.brand{font-size:19px;font-weight:800;line-height:1.5;margin-bottom:30px}
+.brand span{color:#a78bfa}
+.menu-label{font-size:11px;color:#9ca3af;margin:22px 10px 9px}
+.nav{display:block;width:100%;padding:12px;border:0;border-radius:9px;background:transparent;color:#d1d5db;text-align:left;margin:4px 0;cursor:pointer;font-size:13px}
+.nav:hover,.nav.active{background:#312e81;color:white}
+.main{flex:1;min-width:0;padding:28px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+h1{font-size:26px;margin:0 0 8px}
+.sub{color:#6b7280;font-size:13px;line-height:1.6}
+select,input,textarea{padding:12px;border:1px solid #dbe0e9;border-radius:9px;background:white;width:100%;font:inherit}
+.top select{width:auto}
+.welcome{margin:25px 0;background:linear-gradient(120deg,#312e81,#6d28d9);color:white;border-radius:16px;padding:26px}
+.welcome h2{margin:0 0 9px}
+.welcome p{margin:0;color:#e0e7ff;line-height:1.6}
+.section-title{font-size:18px;margin:25px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:white;border:1px solid #e5e7eb;border-radius:13px;padding:17px;min-height:140px;cursor:pointer}
+.card:hover{border-color:#8b5cf6}
+.icon{font-size:24px;margin-bottom:12px}
+.card h3{font-size:14px;margin:0 0 8px}
+.card p{font-size:12px;color:#6b7280;line-height:1.5;margin:0}
+.product{background:white;border:1px solid #e5e7eb;padding:19px;border-radius:13px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{background:#ede9fe;color:#5b21b6;border-radius:20px;padding:6px 10px;font-size:11px}
+.button{border:0;border-radius:9px;padding:12px 17px;background:#5b4bdb;color:white;cursor:pointer;font-weight:600}
+.button:disabled{opacity:.6;cursor:wait}
+.workspace{margin-top:20px;background:white;border:1px solid #e5e7eb;border-radius:14px;padding:22px;display:none}
+.workspace.show{display:block}
+.field{margin:15px 0}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.credits{margin:15px 0;padding:12px;background:#ede9fe;border-radius:9px;font-size:13px;color:#4c1d95;line-height:1.6}
+.result{margin-top:20px;padding:17px;background:#f7f7fc;border-radius:12px;white-space:pre-wrap;line-height:1.7;font-size:14px}
+.status{font-size:13px;margin-top:12px;color:#6d28d9}
+.footer{font-size:12px;color:#9ca3af;margin-top:28px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.layout{display:block}.sidebar{width:100%;padding:15px}.brand{margin-bottom:10px}.menu-label{display:none}.main{padding:17px}.grid{grid-template-columns:1fr 1fr}h1{font-size:21px}}
+@media(max-width:390px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<div class="brand">MY AI <span>BUSINESS</span><br>STUDIO</div>
+<div class="menu-label">MAIN MENU</div>
+<button class="nav active" onclick="home()">&#8962; &nbsp; Dashboard</button>
+<button class="nav" onclick="openTool('Product Finder AI')">&#8981; &nbsp; Product Finder</button>
+<button class="nav" onclick="openTool('Product Analyzer AI')">&#9672; &nbsp; Product Analyzer</button>
+<button class="nav" onclick="openTool('Marketing Post Creator')">&#9783; &nbsp; Post Creator</button>
+<button class="nav" onclick="openTool('Video Post Creator')">&#9657; &nbsp; Video Creator</button>
+<button class="nav" onclick="openTool('Marketing Manager AI')">&#10022; &nbsp; Marketing Manager</button>
+<button class="nav" onclick="openTool('Shopify Manager AI')">&#9784; &nbsp; Shopify Manager</button>
+<button class="nav" onclick="openTool('Customer Service AI')">&#9742; &nbsp; Customer Service</button>
+<button class="nav" onclick="openTool('Sales Analyst AI')">&#9785; &nbsp; Sales Analyst</button>
+<div class="menu-label">SETTINGS</div>
+<button class="nav" onclick="openTool('Settings')">&#9881; &nbsp; Settings</button>
+</aside>
+<main class="main">
+<div class="top">
+<div>
+<h1 id="heading">Business Dashboard</h1>
+<div class="sub" id="subtitle">Your AI-powered business workspace.</div>
+</div>
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="fr">Français</option>
+<option value="ht">Kreyòl Ayisyen</option>
+</select>
+</div>
+<section class="welcome">
+<h2 id="welcomeTitle">Welcome to your AI Business Studio</h2>
+<p id="welcomeText">Manage products, create marketing content and grow your online business from one workspace.</p>
+</section>
+<h2 class="section-title" id="assistantTitle">Your AI Assistants</h2>
+<div class="grid">
+<div class="card" onclick="openTool('Product Finder AI')"><div class="icon">&#128269;</div><h3>Product Finder AI</h3><p>Discover products and research competitors.</p></div>
+<div class="card" onclick="openTool('Product Analyzer AI')"><div class="icon">&#128202;</div><h3>Product Analyzer AI</h3><p>Study audiences, pricing and opportunities.</p></div>
+<div class="card" onclick="openTool('Marketing Post Creator')"><div class="icon">&#128444;</div><h3>Marketing Post Creator</h3><p>Turn your real product photo into a social media post.</p></div>
+<div class="card" onclick="openTool('Video Post Creator')"><div class="icon">&#127916;</div><h3>Video Post Creator</h3><p>Turn your real product photo into a short video.</p></div>
+<div class="card" onclick="openTool('Marketing Manager AI')"><div class="icon">&#128227;</div><h3>Marketing Manager AI</h3><p>Create campaigns, captions and strategies.</p></div>
+<div class="card" onclick="openTool('Shopify Manager AI')"><div class="icon">&#128722;</div><h3>Shopify Manager AI</h3><p>Plan and manage your Shopify store.</p></div>
+<div class="card" onclick="openTool('Customer Service AI')"><div class="icon">&#128172;</div><h3>Customer Service AI</h3><p>Prepare helpful answers for customers.</p></div>
+<div class="card" onclick="openTool('Sales Analyst AI')"><div class="icon">&#128200;</div><h3>Sales Analyst AI</h3><p>Review sales, costs and business results.</p></div>
+</div>
+<h2 class="section-title" id="productTitle">First Test Product</h2>
+<div class="product">
+<div><strong>Copper Dawn Coffee – Breakfast Blend</strong><p class="sub">Ground Coffee · Arabica · 12 oz (340 g) · Fresh Roasted</p></div>
+<span class="tag">TEST PRODUCT</span>
+</div>
+<div class="workspace" id="workspace">
+<h2 id="toolTitle">AI Assistant</h2>
+<div id="analyzer" style="display:none">
+<p class="sub">Enter product details and your real figures. The AI will analyze the opportunity with your actual numbers.</p>
+<div class="field">
+<label>Product name</label>
+<input id="pname" value="Copper Dawn Coffee – Breakfast Blend" maxlength="150">
+</div>
+<div class="field">
+<label>Product details</label>
+<textarea id="pdetails" rows="4" maxlength="1500">Ground Coffee, 12 oz (340 g), Arabica Coffee, Fresh Roasted.</textarea>
+</div>
+<div class="field">
+<label>Target market</label>
+<input id="market" value="United States" maxlength="100">
+</div>
+<div class="field">
+<label>Selling price (USD)</label>
+<input id="price" type="number" step="0.01" min="0" value="24.99">
+</div>
+<div class="field">
+<label>Product cost per unit (USD)</label>
+<input id="cost" type="number" step="0.01" min="0" value="16.95">
+</div>
+<div class="field">
+<label>Shipping cost per unit (USD) — 0 if shipping is included in the product cost</label>
+<input id="shipping" type="number" step="0.01" min="0" value="0">
+</div>
+<div class="field">
+<label>Ad budget per day (USD)</label>
+<input id="ads" type="number" step="0.01" min="0" value="10">
+</div>
+<div class="field">
+<label>Other monthly costs (USD) — plan, apps, subscriptions</label>
+<input id="monthly" type="number" step="0.01" min="0" value="30">
+</div>
+<div class="field">
+<label>Analysis language</label>
+<select id="analysisLanguage">
+<option value="English">English</option>
+<option value="French">French</option>
+<option value="Haitian Creole">Haitian Creole</option>
+</select>
+</div>
+<div class="credits" id="creditsBar"></div>
+<button class="button" id="analyzeButton" onclick="analyzeProduct()">Analyze Product</button>
+<div class="status" id="status"></div>
+<div class="result" id="result" style="display:none"></div>
+</div>
+<div id="finder" style="display:none">
+<p class="sub">Tell the AI your niche. It will suggest products you could sell.</p>
+<div class="field">
+<label>Niche / category</label>
+<input id="fNiche" placeholder="Example: beauty, kitchen, fitness, coffee" maxlength="100">
+</div>
+<div class="field">
+<label>Target market</label>
+<input id="fMarket" value="United States" maxlength="100">
+</div>
+<div class="field">
+<label>Max cost per unit (USD, optional)</label>
+<input id="fBudget" type="number" step="0.01" min="0" placeholder="Example: 15">
+</div>
+<div class="field">
+<label>Language</label>
+<select id="fLang">
+<option value="English">English</option>
+<option value="French">French</option>
+<option value="Haitian Creole">Haitian Creole</option>
+</select>
+</div>
+<div class="credits" id="creditsBarFinder"></div>
+<button class="button" id="finderButton" onclick="runFinder()">Find Products</button>
+<div class="status" id="fStatus"></div>
+<div class="result" id="fResult" style="display:none"></div>
+</div>
+<div id="imageCreator" style="display:none">
+<p class="sub">Upload your real product photo. The AI writes the marketing text, and the tool places your photo in a beautiful scene — ready to post on social media.</p>
+<div class="field">
+<label>Your product photo</label>
+<input type="file" id="iPhoto" accept="image/*">
+</div>
+<div class="field">
+<label>Product name</label>
+<input id="iProduct" value="Copper Dawn Coffee – Breakfast Blend" maxlength="150">
+</div>
+<div class="field">
+<label>Price (USD, optional — leave empty to hide it)</label>
+<input id="iPrice" type="number" step="0.01" min="0" value="24.99">
+</div>
+<div class="field">
+<label>Style</label>
+<select id="iStyle">
+<option value="morning">Morning glow — warm and bright</option>
+<option value="dark">Dark luxury — black and gold</option>
+<option value="green">Fresh green — natural and clean</option>
+<option value="sale">Sale promo — red and bold</option>
+</select>
+</div>
+<div class="field">
+<label>Language for the text on the post</label>
+<select id="iLang">
+<option value="English">English</option>
+<option value="French">French</option>
+<option value="Haitian Creole">Haitian Creole</option>
+</select>
+</div>
+<div class="credits" id="creditsBarImage"></div>
+<button class="button" id="imageButton" onclick="createPost()">Create Post Image</button>
+<div class="status" id="iStatus"></div>
+<div style="margin-top:18px"><img id="iResultImg" style="display:none;max-width:100%;border-radius:12px" alt="Marketing post image"></div>
+<div style="margin-top:12px"><a id="iDownload" style="display:none" download="marketing-post.png">Download image</a></div>
+<div class="result" id="iCopy" style="display:none"></div>
+</div>
+<div id="videoTool" style="display:none">
+<p class="sub">Upload your real product photo. The AI writes the video concept, and the tool records a short animated video with your photo — ready to post on TikTok and Reels.</p>
+<div class="field">
+<label>Your product photo</label>
+<input type="file" id="vPhoto" accept="image/*">
+</div>
+<div class="field">
+<label>Product</label>
+<input id="vProduct" value="Copper Dawn Coffee – Breakfast Blend" maxlength="150">
+</div>
+<div class="field">
+<label>Audience</label>
+<input id="vAudience" placeholder="Example: busy moms, office workers, gift buyers" maxlength="150">
+</div>
+<div class="field">
+<label>Price (USD, optional — leave empty to hide it)</label>
+<input id="vPrice" type="number" step="0.01" min="0" value="24.99">
+</div>
+<div class="field">
+<label>Style</label>
+<select id="vStyle">
+<option value="morning">Morning glow — warm and bright</option>
+<option value="dark">Dark luxury — black and gold</option>
+<option value="green">Fresh green — natural and clean</option>
+<option value="sale">Sale promo — red and bold</option>
+</select>
+</div>
+<div class="field">
+<label>Platform</label>
+<select id="vPlatform">
+<option value="TikTok">TikTok</option>
+<option value="Instagram Reels">Instagram Reels</option>
+<option value="Facebook">Facebook</option>
+</select>
+</div>
+<div class="field">
+<label>Language</label>
+<select id="vLang">
+<option value="English">English</option>
+<option value="French">French</option>
+<option value="Haitian Creole">Haitian Creole</option>
+</select>
+</div>
+<div class="credits" id="creditsBarVideo"></div>
+<button class="button" id="videoButton" onclick="runVideo()">Create Video</button>
+<div class="status" id="vStatus"></div>
+<div style="margin-top:18px"><video id="vResultVideo" style="display:none;max-width:100%;border-radius:12px" controls playsinline></video></div>
+<div style="margin-top:12px"><a id="vDownload" style="display:none">Download video</a></div>
+<div class="result" id="vResult" style="display:none"></div>
+</div>
+<div id="otherTool">
+<p id="toolText">This assistant workspace is prepared for its next development stage.</p>
+<p class="sub">This module is not connected yet.</p>
+</div>
+<button class="button" style="margin-top:18px" onclick="home()">Back to Dashboard</button>
+</div>
+<div class="footer">MY AI BUSINESS STUDIO · MY AI BUSINESS STUDIO · Vercel + Gemini</div>
+</main>
+</div>
+<script>
+var DAILY_CREDITS=500;
+var COST_ANALYSIS=10;
+var COST_FINDER=10;
+var COST_VIDEO=20;
+var COST_IMAGE=20;
+const translations={
+en:{heading:'Business Dashboard',subtitle:'Your AI-powered business workspace.',welcome:'Welcome to your AI Business Studio',welcomeText:'Manage products, create marketing content and grow your online business from one workspace.',assistants:'Your AI Assistants',product:'First Test Product'},
+fr:{heading:'Tableau de bord',subtitle:'Votre espace de gestion commerciale avec IA.',welcome:'Bienvenue dans votre AI Business Studio',welcomeText:'Gérez vos produits, créez du contenu marketing et développez votre activité depuis un seul espace.',assistants:'Vos assistants IA',product:'Premier produit test'},
+ht:{heading:'Tablo jesyon biznis',subtitle:'Espas travay biznis ou ak entèlijans atifisyèl.',welcome:'Byenveni nan AI Business Studio ou',welcomeText:'Jere pwodwi, kreye kontni maketing epi devlope biznis ou nan yon sèl espas.',assistants:'Asistan entèlijans atifisyèl ou yo',product:'Premye pwodwi pou teste'}
+};
+function todayKey(){var d=new Date();return 'abs_spent_'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function creditsSpent(){var v=parseInt(localStorage.getItem(todayKey())||'',10);return isNaN(v)?0:v;}
+function creditsLeft(){return DAILY_CREDITS-creditsSpent();}
+function saveCredits(n){localStorage.setItem(todayKey(),String(DAILY_CREDITS-n));}
+async function fetchTimeout(url,options,ms){
+var ctrl=new AbortController();
+var timer=setTimeout(function(){ctrl.abort();},ms||60000);
+try{
+var r=await fetch(url,Object.assign({},options,{signal:ctrl.signal}));
+clearTimeout(timer);
+return r;
+}catch(e){
+clearTimeout(timer);
+if(e&&e.name==='AbortError'){throw new Error('The AI took too long. Please try again.');}
+throw e;
+}
+}
+function creditsBarText(cost){var left=creditsLeft();var after=left-cost;return 'Credits available: '+left+'  |  This action costs: '+cost+' credits  |  Remaining after: '+(after<0?0:after);}
+function renderCreditsFor(barId,btnId,cost,statusId){var left=creditsLeft();document.getElementById(barId).textContent=creditsBarText(cost);document.getElementById(btnId).disabled=left<cost;if(left<cost){document.getElementById(statusId).textContent='Not enough credits for this action. Your daily credits renew tomorrow.';}}
+function renderCredits(){renderCreditsFor('creditsBar','analyzeButton',COST_ANALYSIS,'status');}
+function changeLanguage(){
+const t=translations[document.getElementById('language').value];
+document.getElementById('heading').textContent=t.heading;
+document.getElementById('subtitle').textContent=t.subtitle;
+document.getElementById('welcomeTitle').textContent=t.welcome;
+document.getElementById('welcomeText').textContent=t.welcomeText;
+document.getElementById('assistantTitle').textContent=t.assistants;
+document.getElementById('productTitle').textContent=t.product;
+}
+function openTool(name){
+document.getElementById('toolTitle').textContent=name;
+var panels=['analyzer','finder','imageCreator','videoTool','otherTool'];
+panels.forEach(function(id){document.getElementById(id).style.display='none';});
+document.getElementById('result').style.display='none';
+document.getElementById('status').textContent='';
+document.getElementById('fResult').style.display='none';
+document.getElementById('fStatus').textContent='';
+document.getElementById('vResult').style.display='none';
+document.getElementById('vStatus').textContent='';
+document.getElementById('iStatus').textContent='';
+document.getElementById('iResultImg').style.display='none';
+document.getElementById('iDownload').style.display='none';
+document.getElementById('iCopy').style.display='none';
+document.getElementById('vResultVideo').style.display='none';
+document.getElementById('vDownload').style.display='none';
+if(name==='Product Analyzer AI'){document.getElementById('analyzer').style.display='block';renderCredits();}
+else if(name==='Product Finder AI'){document.getElementById('finder').style.display='block';renderCreditsFor('creditsBarFinder','finderButton',COST_FINDER,'fStatus');}
+else if(name==='Marketing Post Creator'){document.getElementById('imageCreator').style.display='block';renderCreditsFor('creditsBarImage','imageButton',COST_IMAGE,'iStatus');}
+else if(name==='Video Post Creator'){document.getElementById('videoTool').style.display='block';renderCreditsFor('creditsBarVideo','videoButton',COST_VIDEO,'vStatus');}
+else{document.getElementById('otherTool').style.display='block';document.getElementById('toolText').textContent=name+' is prepared for its next development stage. Its integration is not active yet.';}
+document.getElementById('workspace').classList.add('show');
+document.getElementById('workspace').scrollIntoView({behavior:'smooth'});
+document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+}
+function home(){
+document.getElementById('workspace').classList.remove('show');
+document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+document.querySelector('.nav').classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+async function analyzeProduct(){
+const name=document.getElementById('pname').value.trim();
+const details=document.getElementById('pdetails').value.trim();
+const market=document.getElementById('market').value.trim();
+const language=document.getElementById('analysisLanguage').value;
+const price=parseFloat(document.getElementById('price').value);
+let cost=parseFloat(document.getElementById('cost').value);
+let shipping=parseFloat(document.getElementById('shipping').value);
+let ads=parseFloat(document.getElementById('ads').value);
+let monthly=parseFloat(document.getElementById('monthly').value);
+const button=document.getElementById('analyzeButton');
+const status=document.getElementById('status');
+const result=document.getElementById('result');
+if(!name||!details||!market){status.textContent='Please complete all fields.';return;}
+if(isNaN(price)||price<=0){status.textContent='Enter a selling price greater than 0.';return;}
+if(isNaN(cost))cost=0;
+if(isNaN(shipping))shipping=0;
+if(isNaN(ads))ads=0;
+if(isNaN(monthly))monthly=0;
+if(creditsLeft()<COST_ANALYSIS){status.textContent='Not enough credits for this analysis. Your daily credits renew tomorrow.';renderCredits();return;}
+button.disabled=true;
+button.textContent='Analyzing...';
+status.textContent='Connecting to the AI model. Please wait.';
+result.style.display='none';
+try{
+const response=await fetchTimeout('/api/analyze',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({name,details,market,language,price,cost,shipping,ads,monthly})
+});
+const data=await response.json();
+if(!response.ok)throw new Error(data.error||'AI request failed.');
+if(!data.analysis)throw new Error('The AI returned an empty response.');
+result.textContent=data.analysis;
+result.style.display='block';
+status.textContent='Analysis completed. Review the recommendations below.';
+saveCredits(creditsLeft()-COST_ANALYSIS);
+}catch(error){
+status.textContent='Could not complete analysis: '+error.message;
+}finally{
+button.textContent='Analyze Product';
+renderCredits();
+}
+}
+async function runFinder(){
+const niche=document.getElementById('fNiche').value.trim();
+const market=document.getElementById('fMarket').value.trim();
+const language=document.getElementById('fLang').value;
+const budget=parseFloat(document.getElementById('fBudget').value);
+const button=document.getElementById('finderButton');
+const status=document.getElementById('fStatus');
+const result=document.getElementById('fResult');
+if(!niche||!market){status.textContent='Please enter a niche and a target market.';return;}
+if(creditsLeft()<COST_FINDER){status.textContent='Not enough credits for this action. Your daily credits renew tomorrow.';renderCreditsFor('creditsBarFinder','finderButton',COST_FINDER,'fStatus');return;}
+button.disabled=true;
+button.textContent='Searching...';
+status.textContent='Connecting to the AI model. Please wait.';
+result.style.display='none';
+try{
+const response=await fetchTimeout('/api/finder',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({niche,market,language,budget:isNaN(budget)?0:budget})
+});
+const data=await response.json();
+if(!response.ok)throw new Error(data.error||'AI request failed.');
+if(!data.result)throw new Error('The AI returned an empty response.');
+result.textContent=data.result;
+result.style.display='block';
+status.textContent='Done. Review the product ideas below.';
+saveCredits(creditsLeft()-COST_FINDER);
+}catch(error){
+status.textContent='Could not complete: '+error.message;
+}finally{
+button.textContent='Find Products';
+renderCreditsFor('creditsBarFinder','finderButton',COST_FINDER,'fStatus');
+}
+}
+async function runVideo(){
+var file=document.getElementById('vPhoto').files[0];
+var product=document.getElementById('vProduct').value.trim();
+var audience=document.getElementById('vAudience').value.trim();
+var priceVal=parseFloat(document.getElementById('vPrice').value);
+var style=document.getElementById('vStyle').value;
+var platform=document.getElementById('vPlatform').value;
+var language=document.getElementById('vLang').value;
+var button=document.getElementById('videoButton');
+var status=document.getElementById('vStatus');
+var result=document.getElementById('vResult');
+var video=document.getElementById('vResultVideo');
+var dl=document.getElementById('vDownload');
+if(!file){status.textContent='Please choose your product photo first.';return;}
+if(!product||!audience){status.textContent='Please enter a product and an audience.';return;}
+if(creditsLeft()<COST_VIDEO){status.textContent='Not enough credits for this action. Your daily credits renew tomorrow.';renderCreditsFor('creditsBarVideo','videoButton',COST_VIDEO,'vStatus');return;}
+button.disabled=true;
+button.textContent='Creating video...';
+status.textContent='Reading your photo and writing the video concept...';
+result.style.display='none';
+video.style.display='none';
+dl.style.display='none';
+try{
+var photo=await loadPhoto(file);
+var response=await fetchTimeout('/api/video',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({product,audience,length:'15 seconds',platform,language})
+});
+var data=await response.json();
+if(!response.ok)throw new Error(data.error||'AI request failed.');
+if(!data.result)throw new Error('The AI returned an empty response.');
+var copyResp=await fetchTimeout('/api/post-text',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({product,price:isNaN(priceVal)?0:priceVal,platform,language})
+});
+var copyData=await copyResp.json();
+var copy=(copyResp.ok&&copyData.copy)?copyData.copy:{headline:product,subtext:'Fresh, premium quality.',cta:'Shop now',caption:'',hashtags:[]};
+var priceText=isNaN(priceVal)?'':'$'+priceVal.toFixed(2);
+status.textContent='Recording your 6-second video...';
+var out=await recordVideo(photo,TEMPLATES[style]||TEMPLATES.morning,copy,priceText);
+video.src=out.url;
+video.style.display='block';
+dl.href=out.url;
+dl.download=out.mime==='video/mp4'?'marketing-video.mp4':'marketing-video.webm';
+dl.style.display='inline-block';
+result.textContent=data.result;
+result.style.display='block';
+status.textContent='Video created. Download it with the link below. The full filming concept is underneath.';
+saveCredits(creditsLeft()-COST_VIDEO);
+}catch(error){
+status.textContent='Could not create video: '+error.message;
+}finally{
+button.textContent='Create Video';
+renderCreditsFor('creditsBarVideo','videoButton',COST_VIDEO,'vStatus');
+}
+}
+function recordVideo(photo,tpl,copy,price){
+return new Promise(function(resolve,reject){
+var canvas=document.createElement('canvas');
+canvas.width=1080;canvas.height=1920;
+var ctx=canvas.getContext('2d');
+var stream=canvas.captureStream(30);
+var mime='video/webm';
+if(typeof MediaRecorder!=='undefined'&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported('video/mp4')){mime='video/mp4';}
+var rec;
+try{rec=new MediaRecorder(stream,{mimeType:mime});}catch(e){reject(new Error('This browser cannot record video.'));return;}
+var chunks=[];
+rec.ondataavailable=function(e){if(e.data&&e.data.size){chunks.push(e.data);}};
+rec.onstop=function(){var blob=new Blob(chunks,{type:mime});resolve({url:URL.createObjectURL(blob),mime:mime});};
+rec.onerror=function(){reject(new Error('Video recording failed.'));};
+var start=Date.now();
+var DUR=6000;
+function easeOut(t){return 1-Math.pow(1-t,2);}
+function frame(){
+var el=Date.now()-start;
+var t=Math.min(el/DUR,1);
+var p={
+zoom:1.12-0.12*easeOut(t),
+aHead:t<0.08?0:(t<0.2?(t-0.08)/0.12:1),
+aSub:t<0.33?0:(t<0.5?(t-0.33)/0.17:1),
+aPrice:t<0.58?0:(t<0.66?(t-0.58)/0.08:1),
+aCta:t<0.75?0:(t<0.87?(t-0.75)/0.12:1)
+};
+drawScene(ctx,1080,1920,photo,tpl,copy,price,p);
+if(t<1){requestAnimationFrame(frame);}else{rec.stop();}
+}
+rec.start();
+requestAnimationFrame(frame);
+setTimeout(function(){if(rec.state!=='inactive'){rec.stop();}},DUR+1500);
+});
+}
+function loadPhoto(file){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){res(im);};im.onerror=function(){rej(new Error('Could not read that photo.'));};r.readAsDataURL(file);};r.onerror=function(){rej(new Error('Could not read that photo.'));};});}
+function roundRectPath(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function drawCover(ctx,img,x,y,w,h){var s=Math.max(w/img.width,h/img.height);var dw=img.width*s;var dh=img.height*s;ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);ctx.restore();}
+function wrapTextLines(ctx,text,x,y,maxW,lineH){var words=String(text||'').split(' ');var line='';var yy=y;for(var i=0;i<words.length;i++){var t=line?line+' '+words[i]:words[i];if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line,x,yy);line=words[i];yy+=lineH;}else{line=t;}}if(line){ctx.fillText(line,x,yy);}return yy;}
+var TEMPLATES={
+morning:{bg1:'#FFF7E6',bg2:'#FFD9A0',accent:'#B45309',dark:'#3B2F2F',deco:'rgba(180,83,9,0.12)'},
+dark:{bg1:'#374151',bg2:'#111827',accent:'#D4AF37',dark:'#FFFFFF',deco:'rgba(212,175,55,0.15)'},
+green:{bg1:'#ECFDF5',bg2:'#A7F3D0',accent:'#047857',dark:'#1F2937',deco:'rgba(4,120,87,0.12)'},
+sale:{bg1:'#FEF2F2',bg2:'#FECACA',accent:'#DC2626',dark:'#1F2937',deco:'rgba(220,38,38,0.12)'}
+};
+function drawScene(ctx,W,H,img,tpl,copy,price,p){
+var g=ctx.createLinearGradient(0,0,W,H);
+g.addColorStop(0,tpl.bg1);
+g.addColorStop(1,tpl.bg2);
+ctx.fillStyle=g;
+ctx.fillRect(0,0,W,H);
+ctx.fillStyle=tpl.deco;
+for(var i=0;i<5;i++){ctx.beginPath();ctx.arc(W*(0.12+i*0.19),H*(0.08+(i%3)*0.28),W*0.09,0,Math.PI*2);ctx.fill();}
+var sc=W/1080;
+var photoSize=H*0.52;
+var photoX=(W-photoSize)/2;
+var photoY=H*0.20;
+var zoom=p.zoom||1;
+var pw=photoSize*zoom;
+var ph=photoSize*zoom;
+var px=photoX+(photoSize-pw)/2;
+var py=photoY+(photoSize-ph)/2;
+ctx.save();
+ctx.shadowColor='rgba(0,0,0,0.35)';
+ctx.shadowBlur=40*sc;
+ctx.shadowOffsetY=12*sc;
+roundRectPath(ctx,px,py,pw,ph,28*sc);
+ctx.fillStyle='#FFFFFF';
+ctx.fill();
+ctx.restore();
+ctx.save();
+roundRectPath(ctx,px,py,pw,ph,28*sc);
+ctx.clip();
+drawCover(ctx,img,px,py,pw,ph);
+ctx.restore();
+ctx.save();
+ctx.globalAlpha=p.aHead;
+ctx.fillStyle=tpl.dark;
+ctx.font='800 '+Math.round(60*sc)+'px Arial';
+ctx.textAlign='center';
+wrapTextLines(ctx,copy.headline,W/2,H*0.06,W*0.86,72*sc);
+ctx.restore();
+ctx.save();
+ctx.globalAlpha=p.aSub;
+ctx.fillStyle=tpl.dark;
+ctx.font='400 '+Math.round(38*sc)+'px Arial';
+ctx.textAlign='center';
+wrapTextLines(ctx,copy.subtext,W/2,H*0.80,W*0.86,50*sc);
+ctx.restore();
+if(price){
+ctx.save();
+ctx.globalAlpha=p.aPrice;
+var bx=photoX+photoSize*0.92;
+var by=photoY+photoSize*0.05;
+ctx.beginPath();ctx.arc(bx,by,78*sc,0,Math.PI*2);
+ctx.fillStyle=tpl.accent;ctx.fill();
+ctx.fillStyle='#FFFFFF';
+ctx.font='800 '+Math.round(40*sc)+'px Arial';
+ctx.textAlign='center';
+ctx.fillText(price,bx,by+14*sc);
+ctx.restore();
+}
+ctx.save();
+ctx.globalAlpha=p.aCta;
+roundRectPath(ctx,W*0.28,H*0.90,W*0.44,H*0.045,40*sc);
+ctx.fillStyle=tpl.accent;
+ctx.fill();
+ctx.fillStyle='#FFFFFF';
+ctx.font='700 '+Math.round(36*sc)+'px Arial';
+ctx.textAlign='center';
+ctx.fillText(copy.cta,W/2,H*0.90+(H*0.045)/2+13*sc);
+ctx.restore();
+}
+async function createPost(){
+var file=document.getElementById('iPhoto').files[0];
+var product=document.getElementById('iProduct').value.trim();
+var priceVal=parseFloat(document.getElementById('iPrice').value);
+var style=document.getElementById('iStyle').value;
+var language=document.getElementById('iLang').value;
+var button=document.getElementById('imageButton');
+var status=document.getElementById('iStatus');
+var img=document.getElementById('iResultImg');
+var dl=document.getElementById('iDownload');
+var copyBox=document.getElementById('iCopy');
+if(!file){status.textContent='Please choose your product photo first.';return;}
+if(!product){status.textContent='Please enter the product name.';return;}
+if(creditsLeft()<COST_IMAGE){status.textContent='Not enough credits for this action. Your daily credits renew tomorrow.';renderCreditsFor('creditsBarImage','imageButton',COST_IMAGE,'iStatus');return;}
+button.disabled=true;
+button.textContent='Creating post...';
+status.textContent='Reading your photo and writing the marketing text...';
+img.style.display='none';
+dl.style.display='none';
+copyBox.style.display='none';
+try{
+var photo=await loadPhoto(file);
+var response=await fetchTimeout('/api/post-text',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({product,price:isNaN(priceVal)?0:priceVal,platform:'Instagram',language:language})
+});
+var data=await response.json();
+if(!response.ok)throw new Error(data.error||'AI request failed.');
+var copy=data.copy||{headline:product,subtext:'Fresh, premium quality.',cta:'Shop now',caption:'',hashtags:[]};
+var priceText=isNaN(priceVal)?'':'$'+priceVal.toFixed(2);
+var canvas=document.createElement('canvas');
+canvas.width=1080;canvas.height=1080;
+var ctx=canvas.getContext('2d');
+drawScene(ctx,1080,1080,photo,TEMPLATES[style]||TEMPLATES.morning,copy,priceText,{zoom:1,aHead:1,aSub:1,aPrice:1,aCta:1});
+var url=canvas.toDataURL('image/png');
+img.src=url;
+img.style.display='block';
+dl.href=url;
+dl.style.display='inline-block';
+copyBox.textContent='Caption: '+copy.caption+' | '+copy.hashtags.join(' ');
+copyBox.style.display='block';
+status.textContent='Post image created. Download it with the link below.';
+saveCredits(creditsLeft()-COST_IMAGE);
+}catch(error){
+status.textContent='Could not create post: '+error.message;
+}finally{
+button.textContent='Create Post Image';
+renderCreditsFor('creditsBarImage','imageButton',COST_IMAGE,'iStatus');
+}
+}
+renderCredits();
+</script>
+</body>
+</html>
